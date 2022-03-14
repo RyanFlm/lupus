@@ -5,7 +5,7 @@
     let topAppBar: TopAppBarComponentDev;
 </script>
 
-<TopAppBar bind:this={topAppBar}>
+<TopAppBar variant="static" dense bind:this={topAppBar}>
     <Row>
         <Section>
             <Title>Obylisk</Title>

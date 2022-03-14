@@ -1,56 +1,67 @@
 <script lang="ts">
-    import { H6 } from '@smui/common/elements';
-    import Drawer, { AppContent, Content, Header, Title, Subtitle } from '@smui/drawer'
-    import List, { Item, Text, Graphic, Separator, Subheader } from '@smui/list';
+    import { activeFolder } from '$lib/stores'
+    import { H6 } from '@smui/common/elements'
+    import Drawer, { AppContent, Content } from '@smui/drawer'
+    import List, { Separator, Subheader } from '@smui/list'
+    import Item from './SideBarItem.svelte'
 
-    let active = 'Inbox';
-    const setActive = (value: string) => active = value;
+    const setActive = (item: string) => activeFolder.set(item);
+
+    const folders = [{
+        name: 'Inbox'
+    },{
+        name: 'Star'
+    },{
+        name: 'Sent Mail',
+        icon: 'send'
+    },{
+        name: 'Drafts'
+    }];
+    const labels = [{
+        name: 'Family',
+        icon: 'bookmark'
+    },{
+        name: 'Friends',
+        icon: 'bookmark'
+    },{
+        name: 'Work',
+        icon: 'bookmark'
+    }];
 </script>
 
 <div class="drawer-container">
     <Drawer>
-        <Header>
-            <Title>Obylisk</Title>
-            <Subtitle>It's the best fake mail app drawer.</Subtitle>
-        </Header>
         <Content>
             <List>
-                <Item on:click={() => setActive('Inbox')} activated={active === 'Inbox'}>
-                    <Graphic class="material-icons" aria-hidden="true">inbox</Graphic>
-                    <Text>Inbox</Text>
-                </Item>
-                <Item on:click={() => setActive('Star')} activated={active === 'Star'}>
-                    <Graphic class="material-icons" aria-hidden="true">star</Graphic>
-                    <Text>Star</Text>
-                </Item>
-                <Item on:click={() => setActive('Sent Mail')} activated={active === 'Sent Mail'}>
-                    <Graphic class="material-icons" aria-hidden="true">send</Graphic>
-                    <Text>Sent Mail</Text>
-                </Item>
-                <Item on:click={() => setActive('Drafts')} activated={active === 'Drafts'}>
-                    <Graphic class="material-icons" aria-hidden="true">drafts</Graphic>
-                    <Text>Drafts</Text>
-                </Item>
+
+                {#each folders as folder}
+                    <Item
+                        name={folder.name}
+                        icon={(folder.icon || folder.name).toLowerCase()}
+                        active={$activeFolder === folder.name}
+                        on:click={() => setActive(folder.name)}
+                    />
+                {/each}
         
                 <Separator />
                 <Subheader component={H6}>Labels</Subheader>
-                <Item on:click={() => setActive('Family')} activated={active === 'Family'}>
-                    <Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
-                    <Text>Family</Text>
-                </Item>
-                <Item on:click={() => setActive('Friends')} activated={active === 'Friends'}>
-                    <Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
-                    <Text>Friends</Text>
-                </Item>
-                <Item on:click={() => setActive('Work')} activated={active === 'Work'}>
-                    <Graphic class="material-icons" aria-hidden="true">bookmark</Graphic>
-                    <Text>Work</Text>
-                </Item>
+
+                {#each labels as label}
+                    <Item
+                        name={label.name}
+                        icon={(label.icon || label.name).toLowerCase()}
+                        active={$activeFolder === label.name}
+                        on:click={() => setActive(label.name)}
+                    />
+                {/each}
+
             </List>
         </Content>
     </Drawer>
     <AppContent class="app-content">
-        <slot />
+        <main class="main-content">
+            <slot />
+        </main>
     </AppContent>
 </div>
  
@@ -70,5 +81,10 @@
         overflow: auto;
         position: relative;
         flex-grow: 1;
+    }
+
+    .main-content {
+        padding: 16px;
+        overflow: auto;
     }
 </style>
