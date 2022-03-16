@@ -1,36 +1,33 @@
 <script lang="ts">
-    import { activeFolder } from '$lib/stores'
+	import { onDestroy } from 'svelte'
+    import { activeFolder, drawerOpen } from '$lib/stores'
     import { H6 } from '@smui/common/elements'
     import Drawer, { AppContent, Content } from '@smui/drawer'
     import List, { Separator, Subheader } from '@smui/list'
     import Item from './SideBarItem.svelte'
 
     const setActive = (item: string) => activeFolder.set(item);
+    
+    let open: boolean;
+    const unsubscribe = drawerOpen.subscribe(state => open = state);
 
-    const folders = [{
-        name: 'Inbox'
-    },{
-        name: 'Star'
-    },{
-        name: 'Sent Mail',
-        icon: 'send'
-    },{
-        name: 'Drafts'
-    }];
-    const labels = [{
-        name: 'Family',
-        icon: 'bookmark'
-    },{
-        name: 'Friends',
-        icon: 'bookmark'
-    },{
-        name: 'Work',
-        icon: 'bookmark'
-    }];
+    onDestroy(unsubscribe);
+
+    const folders = [
+        {name: 'Inbox'},
+        {name: 'Star'},
+        {name: 'Sent Mail', icon: 'send'},
+        {name: 'Drafts'},
+    ];
+    const labels = [
+        {name: 'Family', icon: 'bookmark'},
+        {name: 'Friends', icon: 'bookmark'},
+        {name: 'Work', icon: 'bookmark'},
+    ];
 </script>
 
 <div class="drawer-container">
-    <Drawer>
+    <Drawer variant={'dismissible'} bind:open>
         <Content>
             <List>
 

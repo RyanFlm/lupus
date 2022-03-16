@@ -7,10 +7,7 @@
     export let active = false;
 
     const dispatch = createEventDispatcher();
-
-    const click = () => {
-        dispatch('click');
-    };
+    const click = () => dispatch('click');
 
 </script>
 
