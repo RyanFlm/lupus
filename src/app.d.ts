@@ -8,3 +8,12 @@ declare namespace App {
 	// interface Session {}
 	// interface Stuff {}
 }
+
+type Email = {
+  subject: string,
+  sender: string,
+  content: {
+    text: string,
+    html: string
+  }
+}
