@@ -1,4 +1,4 @@
-# obylisk
+# lupus
 A small webbased email-client
 
 # create-svelte
